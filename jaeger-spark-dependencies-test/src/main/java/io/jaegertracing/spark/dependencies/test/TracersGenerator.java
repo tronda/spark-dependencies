@@ -142,7 +142,7 @@ public class TracersGenerator {
         .localServiceName(serviceName)
         .sampler(Sampler.ALWAYS_SAMPLE)
         .traceId128Bit(true)
-        .reporter(reporter)
+        .spanReporter(reporter)
         .build(), () -> reporter.flush());
   }
 
