@@ -62,7 +62,7 @@ public interface TracingWrapper<T extends TracingWrapper> {
       if (parent != null) {
         spanBuilder.asChildOf(parent.get().span);
       }
-      span = (JaegerSpan)spanBuilder.startManual();
+      span = (JaegerSpan)spanBuilder.start();
     }
 
     public JaegerSpan getSpan() {
