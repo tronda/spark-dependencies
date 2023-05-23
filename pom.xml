@@ -54,6 +54,7 @@
     <version.maven-source-plugin>3.2.1</version.maven-source-plugin>
     <version.maven-plugin>0.3.4</version.maven-plugin>
     <version.maven-shade-plugin>3.3.0</version.maven-shade-plugin>
+    <skipTests>false</skipTests>
   </properties>
 
   <inceptionYear>2017</inceptionYear>
@@ -199,6 +200,13 @@
             <phase>compile</phase>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skipTests>${skipTests}</skipTests>
+        </configuration>
       </plugin>
     </plugins>
   </build>
