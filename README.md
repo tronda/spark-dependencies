@@ -108,6 +108,33 @@ docker build -t jaegertracing/spark-dependencies:latest .
 In tests it's possible to specify version of Jaeger images by env variable `JAEGER_VERSION`
 or system property `jaeger.version`. By default tests are using latest images.
 
+## Build our DIPS image
+Example on how to build the docker image locally with an example version tag and also latest tag:
+
+```bash
+docker build -t jaegertracing/dips-jaeger-dependencies-spark:0.3.8 -t jaegertracing/dips-jaeger-dependencies-spark:latest .
+```
+
+### Run the docker image locally
+
+First tag the version:
+```bash
+docker tag jaegertracing/dips-jaeger-dependencies-spark:latest docker.artifacts.<domain>/jaegertracing/dips-jaeger-dependencies-spark:latest
+```
+
+Running the docker image based on the tag:
+```bash
+docker run --rm -ti -u root -e STORAGE=elasticsearch -e ES_NODE=localhost:9200 -e JAVA_OPTS="-Dlog4j.debug=true -Dlog4j.configurationFile=classpath:log4j.properties" docker.artifacts.<domain>/jaegertracing/dips-jaeger-dependencies-spark:latest
+```
+
+### Push docker image to Artifactory:
+
+```bash
+docker tag jaegertracing/dips-jaeger-dependencies-spark:0.3.8 docker.artifacts.<domain>/jaegertracing/dips-jaeger-dependencies-spark:0.3.8
+docker login docker.artifacts.<domain> -u <username>
+docker push docker.artifacts.<domain>/jaegertracing/dips-jaeger-depdendencies-spark:0.3.8
+```
+
 ## License
 
 [Apache 2.0 License](./LICENSE).
