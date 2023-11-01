@@ -42,4 +42,4 @@ RUN chgrp root /etc/passwd && chmod g+rw /etc/passwd
 USER 185
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD java ${JAVA_OPTS} -jar $APP_HOME/jaeger-spark-dependencies-0.0.1-SNAPSHOT.jar
+CMD java ${JAVA_OPTS} -Dlog4j.configurationFile=classpath:log4j.properties -jar $APP_HOME/jaeger-spark-dependencies-0.0.1-SNAPSHOT.jar

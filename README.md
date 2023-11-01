@@ -132,7 +132,7 @@ docker run --rm -ti -u root -e STORAGE=elasticsearch -e ES_NODE=localhost:9200 -
 ```bash
 docker tag jaegertracing/dips-jaeger-dependencies-spark:0.3.8 docker.artifacts.<domain>/jaegertracing/dips-jaeger-dependencies-spark:0.3.8
 docker login docker.artifacts.<domain> -u <username>
-docker push docker.artifacts.<domain>/jaegertracing/dips-jaeger-depdendencies-spark:0.3.8
+docker push docker.artifacts.<domain>/jaegertracing/dips-jaeger-dependencies-spark:0.3.8
 ```
 
 ## License
