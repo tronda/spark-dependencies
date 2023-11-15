@@ -47,6 +47,7 @@
     <version.org.testcontainers>1.18.1</version.org.testcontainers>
     <version.com.squareup.okhttp3-okhttp>3.14.9</version.com.squareup.okhttp3-okhttp>
     <version.org.awaitility-awaitility>4.2.0</version.org.awaitility-awaitility>
+    <version.opentelemetry>1.31.0</version.opentelemetry>
 
     <version.maven-license-plugin>3.0</version.maven-license-plugin>
     <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
@@ -98,7 +99,13 @@
         <artifactId>jaeger-spark-dependencies-elasticsearch</artifactId>
         <version>${project.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>io.opentelemetry</groupId>
+        <artifactId>opentelemetry-bom</artifactId>
+        <version>${version.opentelemetry}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.apache.spark</groupId>
         <artifactId>spark-core_${version.scala.binary}</artifactId>
@@ -192,6 +199,47 @@
           <artifactId>jackson-module-scala_${version.scala.binary}</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-api</artifactId>
+      <version>${version.opentelemetry}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk</artifactId>
+      <version>${version.opentelemetry}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-metrics</artifactId>
+      <version>${version.opentelemetry}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-extension-autoconfigure</artifactId>
+      <version>${version.opentelemetry}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-sdk-extension-autoconfigure-spi</artifactId>
+      <version>${version.opentelemetry}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporter-otlp</artifactId>
+      <version>${version.opentelemetry}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-runtime-telemetry-java8</artifactId>
+      <version>1.31.0-alpha</version>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry</groupId>
+      <artifactId>opentelemetry-exporter-sender-jdk</artifactId>
+      <version>1.31.0-alpha</version>
     </dependency>
 
     <!-- BEGIN DIPS override versions -->
