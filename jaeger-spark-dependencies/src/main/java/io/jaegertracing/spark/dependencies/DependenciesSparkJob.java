@@ -15,12 +15,13 @@ package io.jaegertracing.spark.dependencies;
 
 import io.jaegertracing.spark.dependencies.cassandra.CassandraDependenciesJob;
 import io.jaegertracing.spark.dependencies.elastic.ElasticsearchDependenciesJob;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
+import io.opentelemetry.instrumentation.runtimemetrics.java8.*;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 public final class DependenciesSparkJob {
 
@@ -36,6 +37,15 @@ public final class DependenciesSparkJob {
     } else if (System.getenv("DATE") != null) {
       date = parseZonedDateTime(System.getenv("DATE"));
     }
+
+    OpenTelemetrySdk sdk = AutoConfiguredOpenTelemetrySdk.initialize()
+            .getOpenTelemetrySdk();
+    BufferPools.registerObservers(sdk);
+    Classes.registerObservers(sdk);
+    Cpu.registerObservers(sdk);
+    MemoryPools.registerObservers(sdk);
+    Threads.registerObservers(sdk);
+    GarbageCollector.registerObservers(sdk);
 
     run(storage, date);
   }
