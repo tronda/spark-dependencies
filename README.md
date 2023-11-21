@@ -101,7 +101,7 @@ At a high-level, this job does the following:
 To build the job locally and run tests:
 ```bash
 ./mvnw clean install # if failed add SPARK_LOCAL_IP=127.0.0.1
-STORAGE=elasticsearch ES_NODES=http://localhost:9200 java -jar jaeger-spark-dependencies/target/jaeger-spark-dependencies-0.0.1-SNAPSHOT.jar
+STORAGE=elasticsearch ES_NODES=http://localhost:9200 java -jar jaeger-spark-dependencies/target/jaeger-spark-dependencies-0.0.2-SNAPSHOT.jar
 docker build -t jaegertracing/spark-dependencies:latest .
 ```
 
@@ -112,27 +112,35 @@ or system property `jaeger.version`. By default tests are using latest images.
 Example on how to build the docker image locally with an example version tag and also latest tag:
 
 ```bash
-docker build -t jaegertracing/dips-jaeger-dependencies-spark:0.3.8 -t jaegertracing/dips-jaeger-dependencies-spark:latest .
+export TAG=0.3.12-pre2
+export IMAGE=jaegertracing/dips-jaeger-dependencies-spark
+export REGISTRY=docker.artifacts.dev.dips.no
+docker build -t ${REGISTRY}/${IMAGE}:${TAG} .
+```
+
+Building on a Mac for both arm64 and amd64 at the same time using buildx (will also push to registry):
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 \
+       --push \
+       -t ${REGISTRY}/${IMAGE}:${TAG} .
 ```
 
 ### Run the docker image locally
 
-First tag the version:
-```bash
-docker tag jaegertracing/dips-jaeger-dependencies-spark:latest docker.artifacts.<domain>/jaegertracing/dips-jaeger-dependencies-spark:latest
-```
-
 Running the docker image based on the tag:
 ```bash
-docker run --rm -ti -u root -e STORAGE=elasticsearch -e ES_NODE=localhost:9200 -e JAVA_OPTS="-Dlog4j.debug=true -Dlog4j.configurationFile=classpath:log4j.properties" docker.artifacts.<domain>/jaegertracing/dips-jaeger-dependencies-spark:latest
+docker run --rm -ti -u root \
+  -e STORAGE=elasticsearch \
+  -e ES_NODE=localhost:9200 \
+  -e JAVA_OPTS="-Dlog4j.debug=true -Dlog4j.configurationFile=classpath:log4j.properties" \
+  ${REGISTRY}/${IMAGE}:${TAG}
 ```
 
 ### Push docker image to Artifactory:
 
 ```bash
-docker tag jaegertracing/dips-jaeger-dependencies-spark:0.3.8 docker.artifacts.<domain>/jaegertracing/dips-jaeger-dependencies-spark:0.3.8
-docker login docker.artifacts.<domain> -u <username>
-docker push docker.artifacts.<domain>/jaegertracing/dips-jaeger-dependencies-spark:0.3.8
+docker login ${REGISTRY} -u <username>
+docker push ${REGISTRY}/${IMAGE}:${TAG}
 ```
 
 ## License
