@@ -12,7 +12,7 @@
 # the License.
 #
 
-FROM eclipse-temurin:11 as builder
+FROM eclipse-temurin:8 as builder
 
 ENV APP_HOME /app/
 
@@ -29,10 +29,10 @@ WORKDIR $APP_HOME
 RUN ./mvnw package -Dlicense.skip=true -DskipTests=true
 RUN rm -rf ~/.m2
 
-FROM eclipse-temurin:11-jre
+FROM eclipse-temurin:8-jre
 MAINTAINER Pavol Loffay <ploffay@redhat.com>
 ENV APP_HOME /app/
-COPY --from=builder $APP_HOME/jaeger-spark-dependencies/target/jaeger-spark-dependencies-0.0.1-SNAPSHOT.jar $APP_HOME/
+COPY --from=builder $APP_HOME/jaeger-spark-dependencies/target/jaeger-spark-dependencies-0.0.2-SNAPSHOT.jar $APP_HOME/
 
 WORKDIR $APP_HOME
 
@@ -42,4 +42,4 @@ RUN chgrp root /etc/passwd && chmod g+rw /etc/passwd
 USER 185
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD java ${JAVA_OPTS} -Dlog4j.configurationFile=classpath:log4j.properties -Dotel.service.name=jaeger-spark-dependencies -jar $APP_HOME/jaeger-spark-dependencies-0.0.1-SNAPSHOT.jar
+CMD java ${JAVA_OPTS} -Dlog4j.configurationFile=classpath:log4j.properties -Dotel.service.name=jaeger-spark-dependencies -jar $APP_HOME/jaeger-spark-dependencies-0.0.2-SNAPSHOT.jar
